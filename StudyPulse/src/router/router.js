@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import SessionsView from '@/components/Views/SessionsView.vue'
 import DashboardView from '@/components/Views/DashboardView.vue'
 import SettingsView from '@/components/Views/SettingsView.vue'
+import MyAccountView from '@/components/Views/MyAccountView.vue'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: SettingsView,
+  },
+  {
+    path: '/account',
+    name: 'MyAccount',
+    component: MyAccountView,
   },
 ]
 

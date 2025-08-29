@@ -10,9 +10,15 @@
             <div>User Name</div>
             <div class="text-gray-400 text-sm">Student</div>
           </div>
-          <div id="icon-wrapper" class="flex justify-center items-center">
+          <div id="icon-wrapper" class="flex justify-center items-center cursor-pointer" @click="goToAccountPage">
             <div id="circle" class="p-2 rounded-full bg-[#F3f3f3] w-[44px] h-[44px]"></div>
             <i class="fa-solid fa-user text-xl absolute"></i>
+          </div>
+            <div id="hover-menu" class="hidden group-hover:block bg-white absolute">
+            <ul>
+              <li>Hesabım</li>
+              <li>Çıkış Yap</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -68,3 +74,16 @@
     </div>
   </div>
 </template>
+
+
+<script>
+export  default{
+methods:{
+  goToAccountPage(){
+    this.$router.push("/account")
+  }
+}
+
+
+}
+</script>
