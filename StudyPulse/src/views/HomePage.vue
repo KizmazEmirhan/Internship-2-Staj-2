@@ -4,8 +4,8 @@
 </template>
 
 <script>
-import HeaderComponent from '@/components/HeaderComponent.vue'
-import DashboardView from '@/components/DashboardView.vue'
+import HeaderComponent from '@/components/Views/HeaderComponent.vue'
+import DashboardView from '@/components/Views/DashboardView.vue'
 export default {
   components: {
     HeaderComponent,

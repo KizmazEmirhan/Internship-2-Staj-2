@@ -1,8 +1,9 @@
 <template>
   <div class="flex flex-row flex-wrap gap-4 w-full max-w-full bg-white p-4">
     <div
-      class="flex-1 min-w-[250px] max-w-full flex justify-center border rounded-lg border-gray-200 p-1"
+      class="flex-1 flex-col min-w-[250px] max-w-full flex justify-center border rounded-lg border-gray-200 p-1"
     >
+      <h1 class="text-nowrap font-bold text-md ml-4 mt-4 text-gray-400">Günlük Soru Çözümleri</h1>
       <canvas
         ref="myChart"
         width="350"
@@ -12,8 +13,9 @@
     </div>
 
     <div
-      class="flex-1 min-w-[250px] max-w-full flex justify-center border rounded-lg border-gray-200 p-1"
+      class="flex-1 flex-col min-w-[250px] max-w-full flex justify-center border rounded-lg border-gray-200 p-1"
     >
+      <h1 class="text-nowrap font-bold text-md ml-4 mt-4 text-gray-400">Günlük Çalışma Saatleri</h1>
       <canvas
         ref="doughnutChart"
         width="550"

@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import SessionsView from '@/components/SessionsView.vue'
-import DashboardView from '@/components/DashboardView.vue'
+import SessionsView from '@/components/Views/SessionsView.vue'
+import DashboardView from '@/components/Views/DashboardView.vue'
+import SettingsView from '@/components/Views/SettingsView.vue'
 
 const routes = [
   {
@@ -13,6 +14,11 @@ const routes = [
     path: '/',
     name: 'dashboard',
     component: DashboardView,
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: SettingsView,
   },
 ]
 

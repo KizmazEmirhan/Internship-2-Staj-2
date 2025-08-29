@@ -15,13 +15,20 @@
       >
         {{ session.date }}
       </div>
-      <div
+
+      <button
+        @click="$emit('edit-session', session)"
         class="flex gap-2 items-center bg-green-200 h-fit p-2 shadow-green-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
       >
-        <button @click="$emit('edit-session', session)">
-          <i class="fa-solid fa-pen-to-square"></i>Düzenle
-        </button>
-      </div>
+        <i class="fa-solid fa-pen-to-square"></i>Düzenle
+      </button>
+
+      <button
+        @click="$emit('show-session', session)"
+        class="flex gap-2 items-center bg-blue-200 h-fit p-2 shadow-blue-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
+      >
+        <i class="fa-solid fa-circle-info"></i>Detaylar
+      </button>
     </div>
   </div>
 </template>
@@ -39,13 +46,16 @@
 .animate-modal-in {
   animation: modal-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.modal-fade-enter-active, .modal-fade-leave-active {
-  transition: opacity 0.25s cubic-bezier(.4,0,.2,1);
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.modal-fade-enter-from, .modal-fade-leave-to {
+.modal-fade-enter-from,
+.modal-fade-leave-to {
   opacity: 0;
 }
-.modal-fade-enter-to, .modal-fade-leave-from {
+.modal-fade-enter-to,
+.modal-fade-leave-from {
   opacity: 1;
 }
 </style>
@@ -60,11 +70,13 @@ export default {
     return {
       showModal: false,
       editSession: {},
+      showSession: {},
     }
   },
   methods: {
     openModal(session) {
       this.editSession = { ...session }
+      this.showSession = { ...session }
       this.showModal = true
     },
     saveEdit() {

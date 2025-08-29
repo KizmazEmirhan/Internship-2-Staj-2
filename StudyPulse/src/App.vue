@@ -11,9 +11,9 @@
 </template>
 
 <script>
-import HeaderComponent from './components/HeaderComponent.vue'
+import HeaderComponent from './components/Views/HeaderComponent.vue'
 import HomePage from './views/HomePage.vue'
-import NavbarComponent from './components/NavbarComponent.vue'
+import NavbarComponent from './components/Views/NavbarComponent.vue'
 export default {
   components: {
     HeaderComponent,
