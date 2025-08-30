@@ -33,6 +33,11 @@ export async function register(name, email, password) {
 export function logout() {
   setAuthToken(null)
   clearUser()
+  try {
+    window.location.href = '/auth'
+  } catch (e) {
+    console.warn('Could not redirect on logout', e)
+  }
 }
 
 export function getCurrentUserToken() {
