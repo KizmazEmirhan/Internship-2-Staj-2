@@ -1,5 +1,6 @@
 <template>
   <div class="bg-white w-full grid sm:grid-cols-2 grid-cols-1 gap-4 p-4">
+    <div v-if="sessions">Hiç kayıt yok</div>
     <SessionCard
       :sessions="sessions"
       @edit-session="openEditModal"
@@ -124,21 +125,21 @@
 
 <script>
 import SessionCard from '../UI/SessionCard.vue'
-
-
-
+import { getSessions } from '@/services/getSessions'
 export default {
   components: {
     SessionCard,
   },
   data() {
     return {
-      sessions: [
-        { id: 1, name: 'Soru Çözümü', time: '40:00', date: '01/01/2025' },
-        { id: 2, name: 'Konu Anlatmı Çalışması', time: '50:00', date: '01/01/2025' },
-        { id: 3, name: 'Konu Tekrarı', time: '70:00', date: '01/01/2025' },
-        { id: 4, name: 'Soru Çözümü', time: '43:00', date: '01/01/2025' },
-      ],
+      sessions: {
+        user: '',
+        type: '',
+        topic: '',
+        duration: '',
+        date: '',
+        notes: '',
+      },
       showModal: false,
       editSession: {},
       showSessionDetailsModal: false,
@@ -149,14 +150,21 @@ export default {
       this.editSession = { ...session }
       this.showModal = true
     },
-    openSessionDetails(session) {
-      this.showSession = { ...session }
+    openSessionDetails() {
       this.showSessionDetailsModal = true
+    },
+    getSession() {
+      getSessions().then((sessions) => {
+        this.sessions = sessions
+      })
     },
     saveEdit() {
       this.showModal = false
       // Burada düzenlenen session'ı sessions dizisine kaydedebilirsin
     },
+  },
+  mounted() {
+    this.getSession()
   },
 }
 </script>

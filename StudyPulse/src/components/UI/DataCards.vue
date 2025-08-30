@@ -20,13 +20,5 @@ export default {
       required: true,
     },
   },
-  methods: {
-    logProps() {
-      console.log('Proplar:', this.datas)
-    },
-  },
-  mounted() {
-    this.logProps()
-  },
 }
 </script>

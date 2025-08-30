@@ -1,24 +1,40 @@
 <template>
-  <HeaderComponent></HeaderComponent>
-  <div class="flex justify-center">
-    <div class="container">
-      <div class="flex justify-between flex-col sm:flex-row">
-        <NavbarComponent></NavbarComponent>
-        <router-view></router-view>
+  <div>
+    <HeaderComponent v-if="!$route.meta.noLayout" />
+
+    <div v-if="!$route.meta.noLayout" class="flex justify-center">
+      <div class="container">
+        <div class="flex justify-between flex-col sm:flex-row">
+          <NavbarComponent />
+          <router-view />
+        </div>
       </div>
+    </div>
+
+    <div v-else>
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import HeaderComponent from './components/Views/HeaderComponent.vue'
-import HomePage from './views/HomePage.vue'
+import HeaderComponent from './components/UI/HeaderComponent.vue'
 import NavbarComponent from './components/Views/NavbarComponent.vue'
+
 export default {
   components: {
     HeaderComponent,
-    HomePage,
     NavbarComponent,
+  },
+  methods: {
+    getAuthToken() {
+      if (!localStorage.getItem('token')) {
+        this.$router.push('/auth')
+      }
+    },
+  },
+  mounted() {
+    this.getAuthToken()
   },
 }
 </script>

@@ -4,6 +4,7 @@ import SessionsView from '@/components/Views/SessionsView.vue'
 import DashboardView from '@/components/Views/DashboardView.vue'
 import SettingsView from '@/components/Views/SettingsView.vue'
 import MyAccountView from '@/components/Views/MyAccountView.vue'
+import RegisterationPage from '@/components/Views/RegisterationPage.vue'
 
 const routes = [
   {
@@ -25,6 +26,12 @@ const routes = [
     path: '/account',
     name: 'MyAccount',
     component: MyAccountView,
+  },
+  {
+    path: '/auth',
+    name: 'Register',
+  component: RegisterationPage,
+  meta: { noLayout: true },
   },
 ]
 
