@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "https://studypulsebackend-jet.vercel.app/"
+      "destination": "https://studypulsebackend-jet.vercel.app/api/$1"
     },
     {
       "source": "/(.*)",
