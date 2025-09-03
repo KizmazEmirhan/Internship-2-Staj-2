@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:4000/api'
+const API_URL = process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:4000/api'
 
 // Axios instance oluşturma
 const api = axios.create({
@@ -64,6 +64,7 @@ export const authAPI = {
 export const sessionAPI = {
   create: async (sessionData) => {
     const response = await api.post('/sessions', sessionData)
+
     return response.data
   },
 

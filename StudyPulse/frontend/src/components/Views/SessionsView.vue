@@ -124,7 +124,7 @@
 
 <script>
 import SessionCard from '../UI/SessionCard.vue'
-
+import { sessionAPI } from '@/services/api'
 export default {
   components: {
     SessionCard,
@@ -148,8 +148,9 @@ export default {
     },
     async getSession() {
       try {
-        const sessions = await getSessions()
-        this.sessions = sessions || []
+        const response = await sessionAPI.getAll()
+        console.log(response)
+        this.sessions = response.data || []
       } catch (err) {
         console.error('Could not load sessions', err)
         this.sessions = []

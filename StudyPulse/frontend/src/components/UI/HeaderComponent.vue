@@ -7,8 +7,8 @@
         </div>
         <div id="profile-section" class="flex gap-4 items-center">
           <div class="flex flex-col gap-1">
-            <div>{{ userData?.name + userData?.surname || 'Giriş yapılmadı' }}</div>
-            <div class="text-gray-400 text-sm">{{ userData?.role || 'Student' }}</div>
+            <div>{{ userData.name + userData.surname || 'Giriş yapılmadı' }}</div>
+            <div class="text-gray-400 text-sm">{{ userData.role  }}</div>
           </div>
           <div id="icon-wrapper" class="flex justify-center items-center cursor-pointer" @click="goToAccountPage">
             <div id="circle" class="p-2 rounded-full bg-[#F3f3f3] w-[44px] h-[44px]"></div>
@@ -78,7 +78,7 @@
 
 <script>
 export default {
-  props:{userData:{type:Object,required:false}},
+  props:{userData:{type:Object,required:false,default : ()=>({})}},
 
 
   methods: {
@@ -86,6 +86,14 @@ export default {
       this.$router.push('/account')
     },
    
+  },
+  computed: {
+    userRole() {
+      return this.userData.role;
+    }
+  },
+  mounted(){
+    console.log("this.userData ->",this.userData) // giriş yaptıktan sonra null geliyor
   },
 
 

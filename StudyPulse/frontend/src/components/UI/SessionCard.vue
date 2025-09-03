@@ -6,15 +6,19 @@
     id="card"
     class="border-1 border-gray-200 rounded-lg flex w-full p-4 justify-between mb-2"
   >
-    <div class="font-bold">
-      <h1 class="text-sm font-normal">{{ session.name }}</h1>
-      <div>{{ session.time }}</div>
+    <div class="">
+      <h1 class="text-sm">
+        Ders : <b> {{ session.subject }}</b>
+      </h1>
+      <div class="">
+        Etüt Süresi : <b>{{ formatDuration(session) }}</b>
+      </div>
     </div>
-    <div class="flex flex-col justify-between gap-4">
+    <div class="flex flex-col gap-4">
       <div
         class="bg-gray-200 h-fit p-2 rounded-lg inset-shadow-gray-500/50 inset-shadow-sm text-xs"
       >
-        {{ session.date }}
+        {{ formatDate(session.createdAt) }}
       </div>
 
       <button
@@ -85,6 +89,16 @@ export default {
     },
     saveEdit() {
       this.showModal = false
+    },
+    formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString('tr-TR')
+    },
+    formatDuration(session) {
+      if (!session.endTime) return 'Devam ediyor'
+      const duration = (new Date(session.endTime) - new Date(session.startTime)) / (1000 * 60)
+      const hours = Math.floor(duration / 60)
+      const minutes = Math.floor(duration % 60)
+      return hours > 0 ? `${hours}s ${minutes}dk` : `${minutes}dk`
     },
   },
 }

@@ -11,21 +11,25 @@ const routes = [
     path: '/sessions',
     name: 'Sessions',
     component: SessionsView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/',
     name: 'dashboard',
     component: DashboardView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/settings',
     name: 'Settings',
     component: SettingsView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/account',
     name: 'MyAccount',
     component: MyAccountView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/register',

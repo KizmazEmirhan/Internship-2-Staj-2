@@ -118,6 +118,7 @@ router.put('/:id', auth, async (req, res) => {
       data: session
     });
   } catch (error) {
+    console.error('Session update error:', error);
     res.status(500).json({
       success: false,
       message: error.message
@@ -145,7 +146,7 @@ router.delete('/:id', auth, async (req, res) => {
       });
     }
 
-    await session.remove();
+    await Session.findByIdAndDelete(req.params.id);
 
     res.status(200).json({
       success: true,

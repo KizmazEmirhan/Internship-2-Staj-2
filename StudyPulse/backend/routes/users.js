@@ -22,9 +22,9 @@ router.get('/', auth, async (req, res) => {
 });
 
 // Belirli bir kullanıcıyı getir
-router.get('/:id', auth, async (req, res) => {
+router.get('/me', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id)
+    const user = await User.findById(req.user.id)
       .select('name surname email role active profileImage');
     
     if (!user) {

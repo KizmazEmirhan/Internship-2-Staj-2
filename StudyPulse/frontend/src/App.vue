@@ -1,25 +1,27 @@
 <template>
   <div>
-    <HeaderComponent v-if="!$route.meta.noLayout && isAuthenticated" :userData="userData" />
+    <!-- Eğer authenticated ise layout -->
+    <HeaderComponent v-if="isAuthenticated && !$route.meta.noLayout" :userData="userData" />
 
-    <div v-if="!$route.meta.noLayout && isAuthenticated" class="flex justify-center">
+    <div v-if="isAuthenticated && !$route.meta.noLayout" class="flex justify-center">
       <div class="container">
         <div class="flex justify-between flex-col sm:flex-row">
           <NavbarComponent @logout="handleLogout" />
-          <router-view />
+          <router-view :key="$route.fullPath" />
         </div>
       </div>
     </div>
 
+    <!-- Auth yoksa login/register -->
     <div v-else>
-      <router-view @login-success="handleLoginSuccess" />
+      <router-view @login-success="handleLoginSuccess" :key="$route.fullPath" />
     </div>
   </div>
 </template>
 
 <script>
 import HeaderComponent from './components/UI/HeaderComponent.vue'
-import NavbarComponent from './components/Views/NavbarComponent.vue'
+import NavbarComponent from './components/UI/NavbarComponent.vue'
 
 export default {
   components: {
@@ -30,7 +32,7 @@ export default {
     return {
       isAuthenticated: false,
       token: localStorage.getItem('token'),
-      userData: null,
+      userData: {},
     }
   },
   watch: {
@@ -68,16 +70,41 @@ export default {
     },
     async handleLoginSuccess({ token, user }) {
       localStorage.setItem('token', token)
+      this.token = token // Token'ı hemen güncelle
+
+      // Kullanıcı verilerini bekle ve sonra yönlendir
       await this.fetchUserData()
-      this.$router.push('/')
+      this.$router.push('/sessions')
     },
     async fetchUserData() {
       const token = localStorage.getItem('token')
-      if (!token) return
-      const response = await fetch('/api/me', {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      this.userData = await response.json()
+
+      if (!token) {
+        //console.log('Token yok, fetch iptal edildi')
+        this.userData = {} // Token yoksa userData'yı temizle
+        return
+      }
+
+      try {
+        //console.log('Kullanıcı verileri çekiliyor...')
+        const response = await fetch('/api/me', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        if (response.ok) {
+          this.userData = await response.json()
+          console.log('Kullanıcı verileri alındı:', this.userData)
+        } else {
+          console.error('Kullanıcı verileri alınamadı:', response.status)
+          if (response.status === 401) {
+            this.handleLogout()
+          }
+        }
+      } catch (error) {
+        console.log('Fetch hatası:', error)
+      }
     },
     handleLogout() {
       localStorage.removeItem('token')
@@ -87,15 +114,29 @@ export default {
       this.$router.push('/login')
     },
   },
+  watch: {
+    token(newToken) {
+      this.isAuthenticated = !!newToken
+      this.checkAuthentication()
+      if (newToken) {
+        this.fetchUserData()
+      } else {
+        this.userData = {}
+      }
+    },
+    $route(to) {
+      this.checkAuthentication(to)
+    },
+  },
   mounted() {
-    this.checkAuthentication()
     this.fetchUserData()
-    const savedUser = localStorage.getItem('user')
-    if (savedUser) {
-      this.userData = JSON.parse(savedUser)
+    this.checkAuthentication()
+    if (this.token) {
+      this.fetchUserData()
     }
     window.addEventListener('storage', this.handleStorageChange)
   },
+
   beforeUnmount() {
     window.removeEventListener('storage', this.handleStorageChange)
   },

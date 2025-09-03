@@ -63,7 +63,7 @@ export default {
         console.log('response->', res)
         localStorage.setItem('token', res.token)
         window.dispatchEvent(new Event('storage'))
-        localStorage.setItem('user', JSON.stringify(res.data.user))
+
         this.$emit('login-success', { user: res.data.user, token: res.token })
 
         this.$router.push('/')
