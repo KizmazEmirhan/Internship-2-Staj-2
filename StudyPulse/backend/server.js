@@ -55,4 +55,6 @@ async function startServer() {
   }
 }
 
-module.exports = app;
+startServer()
+
+
