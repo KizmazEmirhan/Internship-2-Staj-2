@@ -47,9 +47,7 @@ router.get("/", auth, async (req, res) => {
       success: true,
       data: sessions,
     });
-    if (res.status == 200) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    }
+
   } catch (error) {
     res.status(500).json({
       success: false,
