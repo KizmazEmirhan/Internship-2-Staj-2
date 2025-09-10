@@ -149,6 +149,7 @@ export default {
     async getSession() {
       try {
         const response = await sessionAPI.getAll()
+        await new Promise((resolve) => setTimeout(resolve, 1000))
         console.log(response)
         this.sessions = response.data || []
       } catch (err) {
