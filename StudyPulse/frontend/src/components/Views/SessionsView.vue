@@ -163,7 +163,8 @@ export default {
     },
   },
   mounted() {
-    this.getSession()
+    setTimeout(this.getSession(),3000)
+    
   },
 }
 </script>
