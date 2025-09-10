@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:4000/api'
+const API_URL = import.meta.env.MODE === 'production' ? 'https://studypulsebackend-jet.vercel.app/api/' : 'http://localhost:4000/api'
 console.log(API_URL)
 // Axios instance oluşturma
 const api = axios.create({  
