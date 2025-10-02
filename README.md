@@ -1,4 +1,4 @@
-# INTERNSHIP-2-STAJ-2
+# StudyPulse
 
 _Empowering Learning, Inspiring Success Every Step Forward_
 
@@ -37,7 +37,7 @@ _Built with the tools and technologies:_
 
 ## Overview
 
-**Internship-2-Staj-2** is a robust developer toolkit for building modern, interactive study management platforms.  
+**StudyPulse** is a robust developer toolkit for building modern, interactive study management platforms.  
 It combines a scalable frontend architecture with Vue 3, Vite, Tailwind CSS, and Chart.js, alongside a powerful backend with Express.js and MongoDB, enabling seamless data handling and real-time updates.
 
 **Why StudyPulse?**
@@ -65,7 +65,7 @@ This project requires the following dependencies:
 
 ### Installation
 
-Build Internship-2-Staj-2 from the source and install dependencies:
+Build StudyPulse from the source and install dependencies:
 
 ```sh
 ❯ git clone https://github.com/KizmazEmirhan/Internship-2-Staj-2
