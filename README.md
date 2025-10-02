@@ -40,7 +40,7 @@ _Built with the tools and technologies:_
 **Internship-2-Staj-2** is a robust developer toolkit for building modern, interactive study management platforms.  
 It combines a scalable frontend architecture with Vue 3, Vite, Tailwind CSS, and Chart.js, alongside a powerful backend with Express.js and MongoDB, enabling seamless data handling and real-time updates.
 
-**Why Internship-2-Staj-2?**
+**Why StudyPulse?**
 
 This project empowers developers to create feature-rich educational applications with ease. The core features include:
 
