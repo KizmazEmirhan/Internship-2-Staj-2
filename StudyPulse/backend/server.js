@@ -2,32 +2,55 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const path = require("path");
 
-// Çevre değişkenlerini yükleme
 dotenv.config();
 
-// Express uygulamasını oluşturma
 const app = express();
 
-// Middleware'leri kurma
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN || ["http://localhost:5173", "https://studypulsefrontend.vercel.app"],
+    origin: process.env.CORS_ORIGIN || [
+      "http://localhost:5173",
+      "https://studypulsefrontend.vercel.app",
+    ],
     credentials: true,
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Route'ları içe aktarma ve kullanma
+// SSE client listesi
+let clients = [];
+
+// SSE endpoint
+app.get("/api/sessions/stream", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  clients.push(res);
+
+  req.on("close", () => {
+    clients = clients.filter((client) => client !== res);
+  });
+});
+
+// Event gönderme fonksiyonu
+function sendEvent(event, data) {
+  clients.forEach((res) => {
+    res.write(`event: ${event}\n`);
+    res.write(`data: ${JSON.stringify(data)}\n\n`);
+  });
+}
+
+// Route’lar
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
-app.use("/api/sessions", require("./routes/sessions"));
+app.use("/api/sessions", require("./routes/sessions")(sendEvent));
 app.use("/api/settings", require("./routes/settings"));
 app.use("/api/parent-connections", require("./routes/parentConnections"));
 
-// Hata işleme middleware'i
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(err.status || 500).json({
@@ -37,7 +60,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// MongoDB bağlantısı ve sunucu başlatma
 async function startServer() {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
@@ -56,5 +78,3 @@ async function startServer() {
 }
 
 startServer();
-
-

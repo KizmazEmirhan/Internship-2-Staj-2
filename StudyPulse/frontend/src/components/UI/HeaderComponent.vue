@@ -93,7 +93,7 @@ export default {
     }
   },
   mounted(){
-    console.log("this.userData ->",this.userData) // giriş yaptıktan sonra null geliyor
+    //console.log("this.userData ->",this.userData) // giriş yaptıktan sonra null geliyor
   },
 
 

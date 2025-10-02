@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-md w-full">
     <h2 class="text-xl font-semibold mb-4">Kayıt Ol</h2>
-    <form @submit.prevent="register" class="space-y-3">
+  <form @submit.prevent="handleRegister" class="space-y-3">
       <div>
         <label class="text-sm text-gray-600">Ad</label>
         <input v-model="form.name" required class="border p-2 w-full rounded mt-1" />
@@ -34,7 +34,6 @@
       <div v-if="success" class="text-green-500 text-sm">{{ success }}</div>
       <div class="flex justify-end">
         <button
-          @click="handleRegister"
           type="submit"
           :disabled="loading"
           class="flex w-full justify-center rounded-md border border-transparent bg-[#8e1ccf] py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-[#7a16b5] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50"
@@ -74,8 +73,13 @@ export default {
       this.success = ''
       try {
         const res = await authAPI.register(this.form)
+        // response contains token and data.user
+        if (res.token) {
+          localStorage.setItem('token', res.token)
+        }
         this.success = 'Kayıt başarılı! Giriş yapabilirsiniz.'
-        this.$emit('registered', res)
+        // Emit created user to parent so it can update immediately
+        this.$emit('registered', res.data?.user || null)
       } catch (err) {
         console.error('Register error', err)
         this.error = err.response?.data?.message || err.message || 'Kayıt başarısız'

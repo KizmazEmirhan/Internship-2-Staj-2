@@ -11,12 +11,18 @@ const sessionSchema = new mongoose.Schema(
     endTime: {
       type: Date,
     },
-    duration: {
-      type: Number, // Duration in minutes
-    },
-    duration: {
-      type: Number, // Duration in minutes
-    },
+      duration: {
+        type: Number, // Duration in minutes
+      },
+      topic: {
+        type: String,
+        trim: true,
+        default: null
+      },
+      questionCount: {
+        type: Number,
+        default: null
+      },
     productivityRating: {
       type: Number,
       min: 1,
@@ -47,7 +53,8 @@ sessionSchema.statics.getTotalStudyTime = async function (
 ) {
   const match = {
     userId: new mongoose.Types.ObjectId(userId),
-    isActive: true,
+    // only include sessions which have a computed duration (i.e. finished sessions)
+    duration: { $exists: true, $ne: null },
   };
 
   if (startDate && endDate) {
@@ -77,7 +84,8 @@ sessionSchema.statics.getSubjectDistribution = async function (
 ) {
   const match = {
     userId: new mongoose.Types.ObjectId(userId),
-    isActive: true,
+    // only include sessions which have a computed duration (i.e. finished sessions)
+    duration: { $exists: true, $ne: null },
   };
 
   if (startDate && endDate) {

@@ -6,6 +6,14 @@
     </div>
 
     <div class="flex gap-2">
+      <div class="flex items-center gap-2">
+        <label class="text-sm">Ders:</label>
+        <select v-if="availableSubjects.length" v-model="subject" class="border rounded p-1">
+          <option v-for="s in availableSubjects" :key="s" :value="s">{{ s }}</option>
+        </select>
+        <input v-else v-model="subject" placeholder="Ders adı" class="border rounded p-1" />
+      </div>
+
       <button
         v-if="!activeSession"
         @click="startStudy"
@@ -27,22 +35,23 @@
 </template>
 
 <script>
-import { sessionAPI } from '@/services/api'
+import { sessionAPI, settingsAPI } from '@/services/api'
 
 export default {
   data() {
     return {
       activeSession: null,
-      timer: 0, // Dakika cinsinden toplam süre
+      timer: 0, // seconds total elapsed
       intervalId: null,
       subject: '', // Kullanıcının seçtiği konu
       description: '', // Opsiyonel açıklama
+      availableSubjects: [],
     }
   },
 
   computed: {
     formattedTime() {
-      const totalSeconds = Math.floor(this.timer * 60)
+      const totalSeconds = Math.floor(this.timer)
       const hours = Math.floor(totalSeconds / 3600)
         .toString()
         .padStart(2, '0')
@@ -57,13 +66,15 @@ export default {
   methods: {
     async fetchActiveSession() {
       try {
-        const res = await sessionAPI.getAll()
+        // sessionAPI.getAll() may return an array or an object like { data: [...] }
+        const raw = await sessionAPI.getAll()
+        const sessions = Array.isArray(raw) ? raw : raw?.data || raw?.sessions || []
 
-        const ongoing = res.data.find((s) => !s.endTime)
+        const ongoing = sessions.find((s) => !s.endTime)
         if (ongoing) {
           this.activeSession = ongoing
-          const elapsed = (new Date() - new Date(ongoing.startTime)) / (1000 * 60)
-          this.timer = elapsed
+          const elapsedSeconds = (Date.now() - new Date(ongoing.startTime)) / 1000
+          this.timer = Math.floor(elapsedSeconds)
           this.startTimer()
         }
       } catch (error) {
@@ -74,7 +85,7 @@ export default {
     startTimer() {
       if (this.intervalId) clearInterval(this.intervalId)
       this.intervalId = setInterval(() => {
-        this.timer += 1 / 60 // her saniye 1/60 dakika ekle
+        this.timer += 1 // increase seconds
       }, 1000)
     },
 
@@ -85,14 +96,20 @@ export default {
 
     async startStudy() {
       if (this.activeSession) return
+      if (!this.subject) {
+        alert('Lütfen bir ders seçin')
+        return
+      }
       try {
         const newSession = {
           startTime: new Date(),
-          subject: this.subject || 'General',
+          subject: this.subject,
           description: this.description || '',
         }
-        const res = await sessionAPI.create(newSession)
-        this.activeSession = res.data
+        // sessionAPI.create may return session object or an object like { data: session }
+        const raw = await sessionAPI.create(newSession)
+        const session = raw?.data || raw
+        this.activeSession = session
         this.timer = 0
         this.startTimer()
         console.log('Session başladı:', this.activeSession)
@@ -122,12 +139,20 @@ export default {
 
   async mounted() {
     await this.fetchActiveSession()
+    try {
+      const raw = await settingsAPI.getSettings()
+      const settings = raw?.data || raw
+      this.availableSubjects = settings?.subjects || []
+      if (!this.subject && this.availableSubjects.length) this.subject = this.availableSubjects[0]
+    } catch (err) {
+      console.warn('Ayarlar okunamadi', err)
+    }
   },
 
   beforeUnmount() {
     this.stopTimer()
   },
-  
+
   beforeRouteLeave() {
     // Don't stop the timer when navigating, just clear the interval
     if (this.intervalId) {

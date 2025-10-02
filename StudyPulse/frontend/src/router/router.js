@@ -5,6 +5,8 @@ import DashboardView from '@/components/Views/DashboardView.vue'
 import SettingsView from '@/components/Views/SettingsView.vue'
 import MyAccountView from '@/components/Views/MyAccountView.vue'
 import RegisterationPage from '@/components/Views/RegisterationPage.vue'
+import ExamsView from '@/components/Views/ExamsView.vue'
+import SubjectsView from '@/components/Views/SubjectsView.vue'
 
 const routes = [
   {
@@ -26,6 +28,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/subjects',
+    name: 'Subjects',
+    component: SubjectsView,
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/account',
     name: 'MyAccount',
     component: MyAccountView,
@@ -44,6 +52,12 @@ const routes = [
     component: RegisterationPage,
     meta: { requiresAuth: false },
     props: { mode: 'login' },
+  },
+  {
+    path: '/exams',
+    name: 'Exams',
+    component: ExamsView,
+    meta: { requiresAuth: true },
   },
 ]
 

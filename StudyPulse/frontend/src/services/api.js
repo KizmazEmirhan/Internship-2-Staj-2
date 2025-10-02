@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.MODE === 'production' ? 'https://studypulsebackend-jet.vercel.app/api/' : 'http://localhost:4000/api'
+const API_URL = import.meta.env.MODE === 'production' ? '/api' : 'http://localhost:4000/api'
 console.log(API_URL)
 // Axios instance oluşturma
-const api = axios.create({  
+const api = axios.create({
   baseURL: API_URL,
 })
 
@@ -55,8 +55,7 @@ export const authAPI = {
   logout: async () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
-    this.$root.updateToken()
-    this.$router.push('/login')
+    // Services shouldn't depend on Vue instance. Let the caller handle redirects.
     return { success: true }
   },
 }
@@ -96,7 +95,7 @@ export const sessionAPI = {
 
 export const userAPI = {
   getProfile: async () => {
-    const response = await api.get('auth/me')
+    const response = await api.get('/auth/me')
     return response.data
   },
 
