@@ -4,7 +4,7 @@
       <h1>Total Study Time</h1>
       <div class="text-2xl font-bold">{{ formattedTime }}</div>
     </div>
-
+    <MotivationQuote />
     <div class="flex gap-2">
       <div class="flex items-center gap-2">
         <label class="text-sm">Ders:</label>
@@ -36,8 +36,9 @@
 
 <script>
 import { sessionAPI, settingsAPI } from '@/services/api'
-
+import MotivationQuote from '@/components/UI/MotivationQuote.vue'
 export default {
+  components: { MotivationQuote },
   data() {
     return {
       activeSession: null,

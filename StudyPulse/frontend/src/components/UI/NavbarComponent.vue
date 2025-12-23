@@ -42,7 +42,7 @@
         </li>
         <li>
           <RouterLink
-            to="/"
+            to="/tasks"
             class="p-2 bg-[#8e1ccf] rounded-lg shadow-sm shadow-gray-500 text-white w-full hover:shadow-2xl hover:translate-x-2 transition-all hover:bg-[#d10f97] flex gap-2 items-center justify-around"
           >
             <i class="fa-solid fa-list-check"></i>

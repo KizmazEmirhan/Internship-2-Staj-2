@@ -14,6 +14,11 @@
             <div id="circle" class="p-2 rounded-full bg-[#F3f3f3] w-[44px] h-[44px]"></div>
             <i class="fa-solid fa-user text-xl absolute"></i>
           </div>
+          <!-- Theme toggle -->
+          <button @click="toggleTheme" class="btn-theme-toggle ml-2" title="Tema değiştir">
+            <i v-if="isDark" class="fa-solid fa-moon"></i>
+            <i v-else class="fa-solid fa-sun"></i>
+          </button>
             <div id="hover-menu" class="hidden group-hover:block bg-white absolute">
             <ul>
               <li>Hesabım</li>
@@ -70,7 +75,7 @@
         </ul>
       </div>
       <hr class="w-full p-0 text-gray-100">
-      </hr>
+      </hr class="text-gray-500">
     </div>
   </div>
 </template>
@@ -78,24 +83,38 @@
 
 <script>
 export default {
-  props:{userData:{type:Object,required:false,default : ()=>({})}},
+  props: { userData: { type: Object, required: false, default: () => ({}) } },
 
+  data() {
+    return {
+      isDark: document.documentElement.getAttribute('data-theme') === 'dark',
+    }
+  },
 
   methods: {
     goToAccountPage() {
       this.$router.push('/account')
     },
-   
+    toggleTheme() {
+      const cur = document.documentElement.getAttribute('data-theme')
+      if (cur === 'dark') {
+        document.documentElement.removeAttribute('data-theme')
+        localStorage.setItem('theme', 'light')
+        this.isDark = false
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        localStorage.setItem('theme', 'dark')
+        this.isDark = true
+      }
+    },
   },
   computed: {
     userRole() {
-      return this.userData.role;
-    }
+      return this.userData.role
+    },
   },
-  mounted(){
-    //console.log("this.userData ->",this.userData) // giriş yaptıktan sonra null geliyor
+  mounted() {
+    this.isDark = document.documentElement.getAttribute('data-theme') === 'dark'
   },
-
-
 }
 </script>

@@ -7,6 +7,7 @@ import MyAccountView from '@/components/Views/MyAccountView.vue'
 import RegisterationPage from '@/components/Views/RegisterationPage.vue'
 import ExamsView from '@/components/Views/ExamsView.vue'
 import SubjectsView from '@/components/Views/SubjectsView.vue'
+import TasksView from '@/components/Views/TasksView.vue'
 
 const routes = [
   {
@@ -57,6 +58,12 @@ const routes = [
     path: '/exams',
     name: 'Exams',
     component: ExamsView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/tasks',
+    name: 'Tasks',
+    component: TasksView,
     meta: { requiresAuth: true },
   },
 ]

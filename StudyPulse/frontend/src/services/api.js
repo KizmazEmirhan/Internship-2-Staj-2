@@ -122,4 +122,38 @@ export const settingsAPI = {
   },
 }
 
+export const tasksAPI = {
+  getAll: async (params) => {
+    const response = await api.get('/tasks', { params })
+    return response.data
+  },
+  create: async (payload) => {
+    const response = await api.post('/tasks', payload)
+    return response.data
+  },
+  update: async (id, data) => {
+    const response = await api.put(`/tasks/${id}`, data)
+    return response.data
+  },
+  delete: async (id) => {
+    const response = await api.delete(`/tasks/${id}`)
+    return response.data
+  },
+}
+
+export const daynotesAPI = {
+  getForDate: async (date) => {
+    const response = await api.get('/daynotes', { params: { date } })
+    return response.data
+  },
+  upsert: async (payload) => {
+    const response = await api.post('/daynotes', payload)
+    return response.data
+  },
+  delete: async (id) => {
+    const response = await api.delete(`/daynotes/${id}`)
+    return response.data
+  },
+}
+
 export default api

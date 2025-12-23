@@ -1,5 +1,7 @@
 <template>
   <div class="max-w-md w-full">
+    <MotivationQuote />
+    <div class="my-4"></div>
     <h2 class="text-xl font-semibold mb-4">Giriş Yap</h2>
     <form @submit.prevent="login" class="space-y-3">
       <div>
@@ -40,6 +42,7 @@
 
 <script>
 import { authAPI } from '@/services/api'
+import MotivationQuote from './MotivationQuote.vue'
 
 export default {
   name: 'LoginComponent',
@@ -54,6 +57,7 @@ export default {
       remember: false,
     }
   },
+  components: { MotivationQuote },
   methods: {
     async handleLogin() {
       this.loading = true

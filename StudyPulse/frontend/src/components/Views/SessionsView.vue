@@ -1,10 +1,14 @@
 <template>
-  <div class="bg-white w-full grid sm:grid-cols-2 grid-cols-1 gap-4 p-4">
-    <SessionCard
-      :sessions="sessions"
-      @edit-session="openEditModal"
-      @show-session="openSessionDetails"
-    />
+  <div class="bg-white w-full gap-4 p-4">
+    <div class="grid grid-cols-2">
+      <div class="mt-4">
+        <SessionCard
+          :sessions="sessions"
+          @edit-session="openEditModal"
+          @show-session="openSessionDetails"
+        />
+      </div>
+    </div>
     <teleport to="body">
       <transition name="modal-fade">
         <div
@@ -17,27 +21,48 @@
               <!-- Unified edit form: subject, topic, questionCount, startTime, endTime -->
               <div class="flex flex-col">
                 <label class="text-sm text-gray-600">Ders / Subject</label>
-                <input v-model="editSession.subject" placeholder="Ders Adı" class="border border-gray-400 rounded-lg p-1 w-full mb-2" />
+                <input
+                  v-model="editSession.subject"
+                  placeholder="Ders Adı"
+                  class="border border-gray-400 rounded-lg p-1 w-full mb-2"
+                />
               </div>
 
               <div class="flex flex-col">
                 <label class="text-sm text-gray-600">Konu / Topic</label>
-                <input v-model="editSession.topic" placeholder="Konu Adı" class="border border-gray-400 rounded-lg p-1 w-full mb-2" />
+                <input
+                  v-model="editSession.topic"
+                  placeholder="Konu Adı"
+                  class="border border-gray-400 rounded-lg p-1 w-full mb-2"
+                />
               </div>
 
               <div class="flex flex-col">
                 <label class="text-sm text-gray-600">Çözülen Soru Sayısı / Question Count</label>
-                <input type="number" v-model.number="editSession.questionCount" placeholder="Soru Sayısı" class="border border-gray-400 rounded-lg p-1 w-full mb-2" />
+                <input
+                  type="number"
+                  v-model.number="editSession.questionCount"
+                  placeholder="Soru Sayısı"
+                  class="border border-gray-400 rounded-lg p-1 w-full mb-2"
+                />
               </div>
 
               <div class="flex flex-col">
                 <label class="text-sm text-gray-600">Başlangıç Zamanı</label>
-                <input type="datetime-local" v-model="editSession.startTimeLocal" class="border border-gray-400 rounded-lg p-1 w-full mb-2" />
+                <input
+                  type="datetime-local"
+                  v-model="editSession.startTimeLocal"
+                  class="border border-gray-400 rounded-lg p-1 w-full mb-2"
+                />
               </div>
 
               <div class="flex flex-col">
                 <label class="text-sm text-gray-600">Bitiş Zamanı</label>
-                <input type="datetime-local" v-model="editSession.endTimeLocal" class="border border-gray-400 rounded-lg p-1 w-full mb-2" />
+                <input
+                  type="datetime-local"
+                  v-model="editSession.endTimeLocal"
+                  class="border border-gray-400 rounded-lg p-1 w-full mb-2"
+                />
               </div>
 
               <div class="flex justify-end gap-2 mt-4">
@@ -68,13 +93,27 @@
             <div class="text-sm space-y-2">
               <p v-if="showSession.subject"><strong>Ders:</strong> {{ showSession.subject }}</p>
               <p v-if="showSession.topic"><strong>Konu:</strong> {{ showSession.topic }}</p>
-              <p v-if="showSession.questionCount"><strong>Çözülen Soru Sayısı:</strong> {{ showSession.questionCount }}</p>
-              <p v-if="showSession.startTime"><strong>Başlangıç:</strong> {{ formatDateTime(showSession.startTime) }}</p>
-              <p v-if="showSession.endTime"><strong>Bitiş:</strong> {{ formatDateTime(showSession.endTime) }}</p>
-              <p v-if="showSession.endTime"><strong>Süre:</strong> {{ formatDuration(showSession) }}</p>
-              <p v-if="showSession.productivityRating"><strong>Verimlilik:</strong> {{ showSession.productivityRating }}/5</p>
-              <p v-if="showSession.description"><strong>Açıklama:</strong> {{ showSession.description }}</p>
-              <p v-if="showSession.createdAt"><strong>Oluşturulma:</strong> {{ formatDateTime(showSession.createdAt) }}</p>
+              <p v-if="showSession.questionCount">
+                <strong>Çözülen Soru Sayısı:</strong> {{ showSession.questionCount }}
+              </p>
+              <p v-if="showSession.startTime">
+                <strong>Başlangıç:</strong> {{ formatDateTime(showSession.startTime) }}
+              </p>
+              <p v-if="showSession.endTime">
+                <strong>Bitiş:</strong> {{ formatDateTime(showSession.endTime) }}
+              </p>
+              <p v-if="showSession.endTime">
+                <strong>Süre:</strong> {{ formatDuration(showSession) }}
+              </p>
+              <p v-if="showSession.productivityRating">
+                <strong>Verimlilik:</strong> {{ showSession.productivityRating }}/5
+              </p>
+              <p v-if="showSession.description">
+                <strong>Açıklama:</strong> {{ showSession.description }}
+              </p>
+              <p v-if="showSession.createdAt">
+                <strong>Oluşturulma:</strong> {{ formatDateTime(showSession.createdAt) }}
+              </p>
 
               <div class="flex justify-end mt-4">
                 <button
@@ -94,6 +133,7 @@
 
 <script>
 import SessionCard from '../UI/SessionCard.vue'
+
 import { sessionAPI } from '@/services/api'
 import api from '@/services/api'
 export default {
@@ -142,7 +182,7 @@ export default {
       const duration = (new Date(session.endTime) - new Date(session.startTime)) / (1000 * 60)
       const hours = Math.floor(duration / 60)
       const minutes = Math.floor(duration % 60)
-  return hours > 0 ? `${hours} saat ${minutes} dk` : `${minutes} dk`
+      return hours > 0 ? `${hours} saat ${minutes} dk` : `${minutes} dk`
     },
     async getSession() {
       try {
@@ -157,8 +197,10 @@ export default {
       try {
         // convert local datetime inputs back to ISO strings
         const payload = { ...this.editSession }
-        if (this.editSession.startTimeLocal) payload.startTime = new Date(this.editSession.startTimeLocal).toISOString()
-        if (this.editSession.endTimeLocal) payload.endTime = new Date(this.editSession.endTimeLocal).toISOString()
+        if (this.editSession.startTimeLocal)
+          payload.startTime = new Date(this.editSession.startTimeLocal).toISOString()
+        if (this.editSession.endTimeLocal)
+          payload.endTime = new Date(this.editSession.endTimeLocal).toISOString()
 
         // cleanup helper fields
         delete payload.startTimeLocal

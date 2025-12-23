@@ -16,21 +16,21 @@
     </div>
     <div class="flex flex-col gap-4">
       <div
-        class="bg-gray-200 h-fit p-2 rounded-lg inset-shadow-gray-500/50 inset-shadow-sm text-xs"
+        class="bg-gray-500 h-fit p-2 rounded-lg inset-shadow-gray-500/50 inset-shadow-sm text-xs"
       >
         {{ formatDate(session.createdAt) }}
       </div>
 
       <button
         @click="$emit('edit-session', session)"
-        class="flex gap-2 items-center bg-green-200 h-fit p-2 shadow-green-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
+        class="flex gap-2 items-center bg-green-500 h-fit p-2 shadow-green-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
       >
         <i class="fa-solid fa-pen-to-square"></i>Düzenle
       </button>
 
       <button
         @click="$emit('show-session', session)"
-        class="flex gap-2 items-center bg-blue-200 h-fit p-2 shadow-blue-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
+        class="flex gap-2 items-center bg-blue-500 h-fit p-2 shadow-blue-500/50 shadow-sm rounded-lg text-xs hover:shadow-none transition-all cursor-pointer"
       >
         <i class="fa-solid fa-circle-info"></i>Detaylar
       </button>
